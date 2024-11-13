@@ -109,6 +109,8 @@ sequenceDiagram
     participant CurrencyRequest
     participant CurrencyConverter
 
+    Client->>Microservice: Send Connection Request
+    Microservice-->>Client: Accept Connection
     Client->>Microservice: Send JSON Request
     Microservice->>Microservice: Receive Request
     Microservice->>Microservice: Parse JSON
