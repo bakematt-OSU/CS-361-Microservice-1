@@ -109,6 +109,7 @@ sequenceDiagram
     participant CurrencyRequest
     participant CurrencyConverter
 
+    Microservice->>: Look Connections Request
     Client->>Microservice: Send Connection Request
     Microservice-->>Client: Accept Connection
     Client->>Microservice: Send JSON Request
