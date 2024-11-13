@@ -99,3 +99,22 @@ Response:
 
 If the conversion fails, the service returns an empty response with the same structure but with empty `CURR` and `AMOUNT` lists.
 
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Microservice
+    participant CurrencyRequest
+    participant CurrencyConverter
+
+    Client->>Microservice: Send JSON Request
+    Microservice->>Microservice: Receive Request
+    Microservice->>Microservice: Parse JSON
+    Microservice->>CurrencyRequest: Call CurrencyRequest(input)
+    CurrencyRequest->>CurrencyConverter: Convert Amounts
+    CurrencyConverter-->>CurrencyRequest: Return Converted Amounts
+    CurrencyRequest->>CurrencyRequest: Sort Results
+    CurrencyRequest-->>Microservice: Return Sorted Results
+    Microservice->>Microservice: Add Address to Response
+    Microservice->>Microservice: Convert Response to JSON
+    Microservice-->>Client: Send JSON Response
