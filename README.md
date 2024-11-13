@@ -22,13 +22,13 @@ This microservice provides currency conversion functionality. It listens for req
     pip install pyzmq currencyconverter
     ```
 
-2. Save the provided script as `currency_converter_service.py`.
+2. Save the provided script as `CurrencyConversionMicroservice.py`.
 
 ## Usage
 
 1. Start the microservice:
     ```bash
-    python currency_converter_service.py
+    python CurrencyConversionMicroservice.py
     ```
 
 2. The service will start and listen for requests on `tcp://*:5555`. NOTE: Propper Port needs to be open if not on the same system.
