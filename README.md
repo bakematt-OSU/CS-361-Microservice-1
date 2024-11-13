@@ -26,7 +26,7 @@ This microservice provides currency conversion functionality. It listens for req
 
 ## Usage
 
-1. Start the microservice:
+1. Start the Currency Converter:
     ```bash
     python CurrencyConversionMicroservice.py
     ```
@@ -69,7 +69,7 @@ The service returns a JSON object with the following structure:
 - `SORT`: The sorting method used.
 - `REQ_CURR`: The original currency abbreviation code.
 - `REQ_AMOUNT`: The original amount to be converted.
-- `ADDR`: The address of the microservice.
+- `ADDR`: The address of the Currency Converter.
 
 ## Example
 
@@ -105,22 +105,25 @@ If the conversion fails, the service returns an empty response with the same str
 ```mermaid
 sequenceDiagram
     participant Client
-    participant Microservice
+    participant ZeroMQ
+    participant CurrencyConverterService
     participant CurrencyRequest
     participant CurrencyConverter
 
-    Microservice->>: Look Connections Request
-    Client->>Microservice: Send Connection Request
-    Microservice-->>Client: Accept Connection
-    Client->>Microservice: Send JSON Request
-    Microservice->>Microservice: Receive Request
-    Microservice->>Microservice: Parse JSON
-    Microservice->>CurrencyRequest: Call CurrencyRequest(input)
+    loop while True
+        CurrencyConverterService->>ZeroMQ: Look Connections Request
+        Client->>CurrencyConverterService: Send Connection Request
+        CurrencyConverterService-->>Client: Accept Connection
+    end
+    Client->>CurrencyConverterService: Send JSON Request
+    CurrencyConverterService->>CurrencyConverterService: Receive Request
+    CurrencyConverterService->>CurrencyConverterService: Parse JSON
+    CurrencyConverterService->>CurrencyRequest: Call CurrencyRequest(input)
     CurrencyRequest->>CurrencyConverter: Convert Amounts
     CurrencyConverter-->>CurrencyRequest: Return Converted Amounts
     CurrencyRequest->>CurrencyRequest: Sort Results
-    CurrencyRequest-->>Microservice: Return Sorted Results
-    Microservice->>Microservice: Add Address to Response
-    Microservice->>Microservice: Convert Response to JSON
-    Microservice-->>Client: Send JSON Response
+    CurrencyRequest-->>CurrencyConverterService: Return Sorted Results
+    CurrencyConverterService->>CurrencyConverterService: Add Address to Response
+    CurrencyConverterService->>CurrencyConverterService: Convert Response to JSON
+    Currency Converter-->>Client: Send JSON Response
 ```
