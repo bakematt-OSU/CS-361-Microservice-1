@@ -100,6 +100,8 @@ Response:
 If the conversion fails, the service returns an empty response with the same structure but with empty `CURR` and `AMOUNT` lists.
 
 
+## UML Sequence Diagram
+
 ```mermaid
 sequenceDiagram
     participant Client
