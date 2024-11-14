@@ -1,3 +1,30 @@
+## UML Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant ZeroMQ
+    participant CurrencyConverterService
+    participant CurrencyRequest
+    participant CurrencyConverter
+
+    loop while True
+        CurrencyConverterService->>ZeroMQ: Look Connections Request
+        Client->>CurrencyConverterService: Send Connection Request
+        CurrencyConverterService-->>Client: Accept Connection
+    end
+    Client->>CurrencyConverterService: Send JSON Request
+    CurrencyConverterService->>CurrencyConverterService: Receive Request
+    CurrencyConverterService->>CurrencyConverterService: Parse JSON
+    CurrencyConverterService->>CurrencyRequest: Call CurrencyRequest(input)
+    CurrencyRequest->>CurrencyConverter: Convert Amounts
+    CurrencyConverter-->>CurrencyRequest: Return Converted Amounts
+    CurrencyRequest->>CurrencyRequest: Sort Results
+    CurrencyRequest-->>CurrencyConverterService: Return Sorted Results
+    CurrencyConverterService->>CurrencyConverterService: Add Address to Response
+    CurrencyConverterService->>CurrencyConverterService: Convert Response to JSON
+    Currency Converter-->>Client: Send JSON Response
+```
 # Currency Converter Microservice
 
 This microservice provides currency conversion functionality. It listens for requests on a specified socket, processes the conversion, and returns the results.
@@ -100,30 +127,3 @@ Response:
 If the conversion fails, the service returns an empty response with the same structure but with empty `CURR` and `AMOUNT` lists.
 
 
-## UML Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant ZeroMQ
-    participant CurrencyConverterService
-    participant CurrencyRequest
-    participant CurrencyConverter
-
-    loop while True
-        CurrencyConverterService->>ZeroMQ: Look Connections Request
-        Client->>CurrencyConverterService: Send Connection Request
-        CurrencyConverterService-->>Client: Accept Connection
-    end
-    Client->>CurrencyConverterService: Send JSON Request
-    CurrencyConverterService->>CurrencyConverterService: Receive Request
-    CurrencyConverterService->>CurrencyConverterService: Parse JSON
-    CurrencyConverterService->>CurrencyRequest: Call CurrencyRequest(input)
-    CurrencyRequest->>CurrencyConverter: Convert Amounts
-    CurrencyConverter-->>CurrencyRequest: Return Converted Amounts
-    CurrencyRequest->>CurrencyRequest: Sort Results
-    CurrencyRequest-->>CurrencyConverterService: Return Sorted Results
-    CurrencyConverterService->>CurrencyConverterService: Add Address to Response
-    CurrencyConverterService->>CurrencyConverterService: Convert Response to JSON
-    Currency Converter-->>Client: Send JSON Response
-```
