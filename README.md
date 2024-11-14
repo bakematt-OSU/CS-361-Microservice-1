@@ -1,31 +1,3 @@
-## UML Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant ZeroMQ
-    participant CurrencyConverterService
-    participant CurrencyRequest
-    participant CurrencyConverter
-
-    loop while True
-        CurrencyConverterService->>+ZeroMQ: Look Connections Request
-        CurrencyConverterService-->>ZeroMQ: Accept Connection
-    end
-    Client->>ZeroMQ: Send Connection Request
-ZeroMQ->>-Client: Accept Connection
-    Client->>CurrencyConverterService: Send JSON Request
-    CurrencyConverterService->>CurrencyConverterService: Receive Request
-    CurrencyConverterService->>CurrencyConverterService: Parse JSON
-    CurrencyConverterService->>CurrencyRequest: Call CurrencyRequest(input)
-    CurrencyRequest->>CurrencyConverter: Convert Amounts
-    CurrencyConverter-->>CurrencyRequest: Return Converted Amounts
-    CurrencyRequest->>CurrencyRequest: Sort Results
-    CurrencyRequest-->>CurrencyConverterService: Return Sorted Results
-    CurrencyConverterService->>CurrencyConverterService: Add Address to Response
-    CurrencyConverterService->>CurrencyConverterService: Convert Response to JSON
-    CurrencyConverterService-->>Client: Send JSON Response
-```
 # Currency Converter Microservice
 
 This microservice provides currency conversion functionality. It listens for requests on a specified socket, processes the conversion, and returns the results.
@@ -129,19 +101,21 @@ If the conversion fails, the service returns an empty response with the same str
 
 
 ## UML Sequence Diagram
+
 ```mermaid
+
 sequenceDiagram
     participant Client
-    participant Microservice
-    participant CurrencyRequest
-    participant CurrencyConverter
-    Client->>Microservice: Send JSON Request
-    Microservice->>Microservice: Receive Request
-    Microservice->>Microservice: Parse JSON
-    Microservice->>CurrencyRequest: Call CurrencyRequest(input)
-    CurrencyRequest->>CurrencyConverter: Convert Amounts
-    CurrencyConverter-->>CurrencyRequest: Return Converted Amounts
-    CurrencyRequest->>CurrencyRequest: Sort Results
-    CurrencyRequest-->>Microservice: Return Sorted Results
-    Microservice->>Microservice: Add Address to Response
-    Microservice->>Microservice: Convert Response to JSON
+    participant Currency Converter Microservice
+    participant Currency Converter
+    
+    Client->>+Currency Converter Microservice: Send JSON Request
+    Currency Converter Microservice->>Currency Converter Microservice: Receive Request
+    Currency Converter Microservice->>Currency Converter Microservice: Parse JSON
+    Currency Converter Microservice->>Currency Converter: Convert Amounts
+    Currency Converter-->>Currency Converter Microservice: Return Converted Amounts
+    Currency Converter Microservice->>Currency Converter Microservice: Sort Results
+    Currency Converter Microservice->>Currency Converter Microservice: Add Address to Response
+    Currency Converter Microservice->>Currency Converter Microservice: Convert Response to JSON
+    Currency Converter Microservice-->>-Client: Convert Response to JSON
+```
