@@ -33,6 +33,7 @@ This microservice provides currency conversion functionality. It listens for req
 
 2. The service will start and listen for requests on `tcp://*:5555`. NOTE: Propper Port needs to be open if not on the same system.
 
+# Communication Contract and UML:
 ## Request Format
 
 Send a JSON object with the following structure:
