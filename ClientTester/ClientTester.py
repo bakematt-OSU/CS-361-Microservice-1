@@ -69,3 +69,4 @@ for case in Tests:
     socket.close()
     print()
 print("COMPLETED CLIENT CASES")
+input()
