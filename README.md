@@ -9,10 +9,11 @@ sequenceDiagram
     participant CurrencyConverter
 
     loop while True
-        CurrencyConverterService->>ZeroMQ: Look Connections Request
-        Client->>CurrencyConverterService: Send Connection Request
-        CurrencyConverterService-->>Client: Accept Connection
+        CurrencyConverterService->>+ZeroMQ: Look Connections Request
+        CurrencyConverterService-->>ZeroMQ: Accept Connection
     end
+    Client->>ZeroMQ: Send Connection Request
+ZeroMQ->>-Client: Accept Connection
     Client->>CurrencyConverterService: Send JSON Request
     CurrencyConverterService->>CurrencyConverterService: Receive Request
     CurrencyConverterService->>CurrencyConverterService: Parse JSON
@@ -23,7 +24,7 @@ sequenceDiagram
     CurrencyRequest-->>CurrencyConverterService: Return Sorted Results
     CurrencyConverterService->>CurrencyConverterService: Add Address to Response
     CurrencyConverterService->>CurrencyConverterService: Convert Response to JSON
-    Currency Converter-->>Client: Send JSON Response
+    CurrencyConverterService-->>Client: Send JSON Response
 ```
 # Currency Converter Microservice
 
@@ -127,3 +128,20 @@ Response:
 If the conversion fails, the service returns an empty response with the same structure but with empty `CURR` and `AMOUNT` lists.
 
 
+## UML Sequence Diagram
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Microservice
+    participant CurrencyRequest
+    participant CurrencyConverter
+    Client->>Microservice: Send JSON Request
+    Microservice->>Microservice: Receive Request
+    Microservice->>Microservice: Parse JSON
+    Microservice->>CurrencyRequest: Call CurrencyRequest(input)
+    CurrencyRequest->>CurrencyConverter: Convert Amounts
+    CurrencyConverter-->>CurrencyRequest: Return Converted Amounts
+    CurrencyRequest->>CurrencyRequest: Sort Results
+    CurrencyRequest-->>Microservice: Return Sorted Results
+    Microservice->>Microservice: Add Address to Response
+    Microservice->>Microservice: Convert Response to JSON
