@@ -36,6 +36,8 @@ This microservice provides currency conversion functionality. It listens for req
 ## Request Format
 
 Send a JSON object with the following structure:
+
+(NOTE: A list of Currency Abbrevations can be found here in file CurrencyAbbrevation.md)
 ```json
 {
     "SORT": "CURR" or "VALUE" or "",
