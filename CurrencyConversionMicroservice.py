@@ -4,9 +4,8 @@ import json
 from currency_converter import CurrencyConverter
 c = CurrencyConverter()
 
-def CurrencyRequest(input):
-    # RETURN DICT
-    returnValue = {
+def returnJSON():
+    returnJSON = {
         "CURR": [],
         "AMOUNT": [],
         "SORT": input['SORT'],
@@ -14,6 +13,12 @@ def CurrencyRequest(input):
         "REQ_AMOUNT": input['AMOUNT'],
         "ADDR": ''
     }
+    return returnJSON
+
+def CurrencyRequest(input):
+    # RETURN DICT
+    returnValue = returnJSON()
+    
     #TRY TO CONVERT:
     try:
 
@@ -44,14 +49,8 @@ def CurrencyRequest(input):
 
     #ERROR HANDLING IF IT CAN'T FIGURE IT OUT JUST RETURN EMPTY:
     except:
-        returnValue = {
-            "CURR": [],
-            "AMOUNT": [],
-            "SORT": input['SORT'],
-            "REQ_CURR": input['NOW_CURR'],
-            "REQ_AMOUNT": input['AMOUNT'],
-            "ADDR": ''
-        }
+        returnValue = returnJSON()
+        
     #RETURN THE CALCULATION
     return returnValue
 
